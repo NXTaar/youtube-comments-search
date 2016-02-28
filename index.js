@@ -1,27 +1,7 @@
 'use strict';
-const Rx = require('rx');
-const Output = require('./output');
-const co = require('co');
+require('./module-path');
+require('sequence-based');
+require('./server');
 
-//todo ËÒÔÓÎ¸ÁÓ‚‡Ú¸ ETags Ì‡ ÒÚ‡ÌËˆÂ API ‰Îˇ Í˝¯ËÓ‚‡ÌËˇ Á‡ÔÓÒÓ‚
-const Youtube = require('googleapis').youtube;
-
-const config = require('config');
-
-function keySignedAPIRequest(obj) {
-    obj.auth = config.get('APIkey');
-    return obj;
-}
-
-
-let array = [1,2,3,4,5,6,7];
-setTimeout(() => { array.push(4393)}, 3000);
-var source = Rx.Observable.create((observer) => {
-    while (true) {
-        let givenValue = array.shift();
-        if (givenValue) observer.onNext(givenValue);
-    }
-});
-
-var subscription = source.subscribe((x) => { console.log(x) });
-
+//todo searchWord –¥–æ–ª–∂–Ω–æ –±—ã—Ç—å –º–∏–Ω–∏–º—É–º —Ç—Ä–∏ —Å–∏–º–≤–æ–ª–∞ –¥–ª–∏–Ω–Ω–æ–π
+//todo —Å–æ—Ö—Ä–∞–µ–Ω–∏–µ –æ—à–∏–±–æ–∫ –≤ –ª–æ–≥-—Ñ–∞–π–ª—ã
