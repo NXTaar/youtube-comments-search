@@ -1,0 +1,20 @@
+{
+  "name": "youtube_comments_extractor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "youtube": "node --harmony_destructuring modules/youtube"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "co": "^4.6.0",
+    "config": "^1.19.0",
+    "dateformat": "^1.0.12",
+    "extend": "^3.0.0",
+    "googleapis": "^2.1.7",
+    "jsonfile": "^2.2.3",
+    "rx": "^4.0.8"
+  }
+}
