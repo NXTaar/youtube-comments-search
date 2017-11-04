@@ -1,3 +1,4 @@
 {
-    "jsonOutput": "server/output"
+    "jsonOutput": "server/output",
+    "port": 3000
 }

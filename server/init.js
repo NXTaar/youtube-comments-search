@@ -1,0 +1,1 @@
+const webpackSetup = require('../webpack/dev.config')
