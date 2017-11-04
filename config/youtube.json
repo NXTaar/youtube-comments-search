@@ -1,14 +1,14 @@
 {
-    "collectionRegex": "^items/",
     "common": {
         "maxResults": 100,
         "part": "snippet",
         "textFormat": "plainText"
     },
+    "collectionProperty": "items",
     "comments": {
         "order": "relevance",
         "fields": {
-            "nextPageToken": "nextPageToken",
+            "pageToken": "nextPageToken",
             "videoId": "items/snippet/videoId",
             "text": "items/snippet/topLevelComment/snippet/textDisplay",
             "author": "items/snippet/topLevelComment/snippet/authorDisplayName",
@@ -20,7 +20,7 @@
     },
     "replies": {
         "fields": {
-            "nextPageToken": "nextPageToken",
+            "pageToken": "nextPageToken",
             "author": "items/snippet/authorDisplayName",
             "channel": "items/snippet/authorChannelUrl",
             "text": "items/snippet/textDisplay",

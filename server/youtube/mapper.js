@@ -2,7 +2,7 @@ const mapping = require('config').get('mapping')
 
 const _get = require('lodash.get')
 
-let collectionRegex = new RegExp(mapping.collectionRegex, 'g')
+let collectionRegex = new RegExp(`^${mapping.collectionProperty}/`, 'g')
 
 const parse = (scheme, target) => Object.keys(scheme).reduce((res, address) => {
     let responseValue = _get(target, address)
@@ -38,7 +38,7 @@ const mapResponse = schemeType => {
     return response => {
         let { single, collection } = parsingScheme
         let singleProps = parse(single, response)
-        let items = response.items.map(item => parse(collection, item))
+        let items = response[mapping.collectionProperty].map(item => parse(collection, item))
         return {
             ...singleProps,
             items

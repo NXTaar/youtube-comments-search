@@ -1,5 +1,9 @@
 const youtube = require('./youtube.json')
-const auth = require('./apiKey.json')
+const auth = process.env.GOOGLE_API_KEY
+
+if (typeof auth !== 'string') {
+    throw new Error('No API key was provided. Please set it via GOOGLE_API_KEY envirement variable')
+}
 const app = require('./app.json')
 
 const common = {
@@ -27,7 +31,7 @@ module.exports = {
         }
     },
     mapping: {
-        collectionRegex: youtube.collectionRegex,
+        collectionProperty: youtube.collectionProperty,
         comments: youtube.comments.fields,
         replies: youtube.replies.fields
     }

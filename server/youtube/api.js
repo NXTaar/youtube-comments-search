@@ -4,13 +4,23 @@ const API = require('googleapis').youtube('v3')
 
 const { comments, replies } = config.get('youtubeAPI')
 
-const commentsAPI = API.commentThreads.list
-const repliesAPI = API.comments.list
+const APIRequest = ({api, mapper, static}) => query => {
+    return new Promise((res, rej) => {
+        api({ ...static, ...query }, (err, response) => {
+            if (err) return rej(err)
+            res(mapper(response))
+        })
+    })
+}
 
-const writeToJSON = require('../output/json')
+exports.comments = APIRequest({
+    api: API.commentThreads.list,
+    mapper: mapResponse('comments'),
+    static: comments
+})
 
-let mapper = mapResponse('comments')
-
-commentsAPI({...comments, videoId: 'qBgbKJE9XiM'}, (err,res) => {
-    writeToJSON({filename: 'response', target: mapper(res)})
+exports.replies = APIRequest({
+    api: API.comments.list,
+    mapper: mapResponse('replies'),
+    static: replies
 })
