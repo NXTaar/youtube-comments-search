@@ -7,19 +7,23 @@ const config = require('config')
 const projectDir = process.cwd()
 
 const HTMLSettings = {
-    title: 'Comments search',
+    template: 'client/index.html',
     inject: 'body'
 }
 
 module.exports = {
-    entry: path.join(projectDir, 'client', 'index'),
+    entry: [
+        'webpack-hot-middleware/client?reload=true',
+        path.join(projectDir, 'client', 'app')
+    ],
     output: {
         filename: 'bundle.js',
-        path: path.resolve(projectDir, 'dist'),
-        publicPath: '/dist/'
+        path: '/',
+        publicPath: '/'
     },
     plugins: [
-        new HtmlWebpackPlugin(HTMLSettings)
+        new HtmlWebpackPlugin(HTMLSettings),
+        new webpack.HotModuleReplacementPlugin()
     ],
     module: {
         rules: [
@@ -33,6 +37,10 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
@@ -43,12 +51,9 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            'vue$': 'vue/dist/vue.esm.js',
+            '@utils': path.resolve(projectDir, 'client/utils')
         }
     },
-    devtool: 'source-map',
-    devServer: {
-        contentBase: path.join(projectDir, "dist"),
-        port: config.get('app.port')
-    }
+    devtool: 'source-map'
 };

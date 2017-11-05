@@ -1,81 +1,112 @@
 <template>
-  <div id="app">
-    <div class="banner">
-      <img
-        src="https://vuejs.org/images/logo.png"
-        width="100"
-        alt="vue"
-        class="logo"
-      />
-      <h1>Welcome to Vue.js</h1>
-    </div>
-    <div class="bottom">
-      To get started, edit <code>./src/components/App.vue</code> and save to reload.<br/>
-      <span class="fade">
-        Checkout <code>./README.md</code> for more usages.
-      </span>
-    </div>
+  <div class="container">
+    <md-card class="search-form">
+      <md-card-header>
+        <div class="md-title">Youtube Comment Search</div>
+        <div class="md-subhead">Enter video id and search string and get results</div>
+      </md-card-header>
+
+      <md-card-content>
+      
+        <div>
+           <md-input-container class="md-warn">
+             <label>What phrase are you looking?</label>
+             <md-input v-model="searchString"></md-input>
+           </md-input-container>
+        </div>
+      
+      </md-card-content>
+
+      <md-card-actions class="actions">
+
+        <md-input-container class="video-id">
+             <label>Video ID</label>
+             <md-input v-model="videoId"></md-input>
+        </md-input-container>
+        
+        <md-button v-on:click="submit" class="search-btn md-raised md-primary">Search!</md-button>
+      
+      </md-card-actions>
+    </md-card>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'app'
+
+import { encodeGET } from '@utils/query'
+
+export default {
+  name: "app",
+  methods: {
+    submit() {
+      
+      let { videoId, searchString } = this.$store.state
+      
+      let validation = {
+        [videoId.length === 0]: 'videoId',
+        [searchString.length === 0 || searchString.length < 3]: 'searchString'
+      }
+      
+      if (typeof validation[true] === 'string') return
+
+      let query = encodeGET({ q: searchString, vId: videoId })
+      fetch(`search?${query}`)
+    }
+  },
+  computed: {
+    searchString: {
+      get() {
+        return this.$store.state.searchString;
+      },
+      set(value) {
+        this.$store.commit("handleInput", { input: "searchString", value });
+      }
+    },
+    videoId: {
+      get() {
+        return this.$store.state.videoId;
+      },
+      set(value) {
+        this.$store.commit("handleInput", { input: "videoId", value });
+      }
+    }
   }
+};
 </script>
 
 <!-- CSS libraries -->
-<style src="normalize.css/normalize.css"></style>
+<!--<style src="normalize.css/normalize.css"></style> -->
 
 <!-- Global CSS -->
 <style>
-  code {
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-    font-size: 0.9em;
-    white-space: pre-wrap;
-    color: #2c3e50;
-  }
-
-  code::before, code::after {
-    content: '`';
-  }
+body {
+  height: 100%;
+  min-width: 720px;
+}
 </style>
 
 <!-- Scoped component css -->
 <!-- It only affect current component -->
 <style scoped>
-  #app {
-    text-align: center;
-  }
-
-  #app h1 {
-    color: #2c3e50;
-    font-weight: 300;
-    margin: 0;
-  }
-
-  .banner {
-    height: 200px;
-    background-color: #f6f6f6;
-    padding: 50px 10px;
-  }
-
-  .bottom {
-    padding: 80px 10px;
-    font-size: 24px;
-    font-weight: 300;
-  }
-
-  .fade {
-    font-size: 14px;
-  }
-
-  .logo {
-    animation: spin 4s 1s infinite linear
-  }
-
-  @keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
-  }
+.container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.actions {
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+.video-id {
+  width: 320px;
+}
+.search-form {
+  top: -50px;
+  min-width: 540px;
+  max-width: 50%;
+}
+.search-btn {
+  margin-right: 30px;
+}
 </style>
