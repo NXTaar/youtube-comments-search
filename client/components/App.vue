@@ -32,25 +32,28 @@
 </template>
 
 <script>
-
-import { encodeGET } from '@utils/query'
+import request from "superagent";
+import { encodeGET } from "@utils/query";
+import { openConnection } from "@modules/pulse";
 
 export default {
   name: "app",
   methods: {
-    submit() {
-      
-      let { videoId, searchString } = this.$store.state
-      
-      let validation = {
-        [videoId.length === 0]: 'videoId',
-        [searchString.length === 0 || searchString.length < 3]: 'searchString'
-      }
-      
-      if (typeof validation[true] === 'string') return
+    async submit() {
+      let { videoId, searchString } = this.$store.state;
 
-      let query = encodeGET({ q: searchString, vId: videoId })
-      fetch(`search?${query}`)
+      let validation = {
+        [videoId.length === 0]: "videoId",
+        [searchString.length === 0 || searchString.length < 3]: "searchString"
+      };
+
+      if (typeof validation[true] === "string") return;
+
+      let query = encodeGET({ q: searchString, vId: videoId });
+      let searchRequest = await request(`search?${query}`);
+      if (searchRequest.text === "ok") {
+        this.$store.commit("openConnection");
+      }
     }
   },
   computed: {

@@ -52,7 +52,8 @@ module.exports = {
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
-            '@utils': path.resolve(projectDir, 'client/utils')
+            '@utils': path.resolve(projectDir, 'client/utils'),
+            '@modules': path.resolve(projectDir, 'client/modules')
         }
     },
     devtool: 'source-map'
