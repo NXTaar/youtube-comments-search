@@ -1,85 +1,17 @@
 <template>
   <div class="container">
-    <md-card class="search-form">
-      <md-card-header>
-        <div class="md-title">Youtube Comment Search</div>
-        <div class="md-subhead">Enter video id and search string and get results</div>
-      </md-card-header>
-
-      <md-card-content>
-      
-        <div>
-           <md-input-container class="md-warn">
-             <label>What phrase are you looking?</label>
-             <md-input v-model="searchString"></md-input>
-           </md-input-container>
-        </div>
-      
-      </md-card-content>
-
-      <md-card-actions class="actions">
-
-        <md-input-container class="video-id">
-             <label>Video ID</label>
-             <md-input v-model="videoId"></md-input>
-        </md-input-container>
-        
-        <md-button v-on:click="submit" class="search-btn md-raised md-primary">Search!</md-button>
-      
-      </md-card-actions>
-    </md-card>
+    <search></search>
+    <results v-if="comments.length > 0"></results>
   </div>
 </template>
 
 <script>
-import request from "superagent";
-import { encodeGET } from "@utils/query";
-import { openConnection } from "@modules/pulse";
-
 export default {
   name: "app",
-  methods: {
-    async submit() {
-      let { videoId, searchString } = this.$store.state;
-
-      let validation = {
-        [videoId.length === 0]: "videoId",
-        [searchString.length === 0 || searchString.length < 3]: "searchString"
-      };
-
-      if (typeof validation[true] === "string") return;
-
-      let query = encodeGET({ q: searchString, vId: videoId });
-
-      let searchRequest = { body: {} }
-      
-      try {
-        searchRequest = await request(`search?${query}`)
-      }
-      catch (err) {
-        console.error(err.response.text)
-      }
-      
-      if (searchRequest.body.clientId) {
-        openConnection({ clientId: searchRequest.body.clientId, store: this.$store})
-      }
-    }
-  },
   computed: {
-    searchString: {
+    comments: {
       get() {
-        return this.$store.state.searchString;
-      },
-      set(value) {
-        this.$store.commit("handleInput", { input: "searchString", value });
-      }
-    },
-    videoId: {
-      get() {
-        return this.$store.state.videoId;
-      },
-      set(value) {
-        this.$store.commit("handleInput", { input: "videoId", value });
+        return this.$store.state.comments;
       }
     }
   }
@@ -94,6 +26,7 @@ export default {
 body {
   height: 100%;
   min-width: 720px;
+  overflow: scroll;
 }
 </style>
 
@@ -103,22 +36,8 @@ body {
 .container {
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-.actions {
-  justify-content: space-between;
-  padding: 8px 16px;
-}
-.video-id {
-  width: 320px;
-}
-.search-form {
-  top: -50px;
-  min-width: 540px;
-  max-width: 50%;
-}
-.search-btn {
-  margin-right: 30px;
 }
 </style>

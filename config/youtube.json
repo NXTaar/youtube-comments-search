@@ -21,6 +21,7 @@
     "replies": {
         "fields": {
             "pageToken": "nextPageToken",
+            "replyId": "items/id",
             "author": "items/snippet/authorDisplayName",
             "channel": "items/snippet/authorChannelUrl",
             "text": "items/snippet/textDisplay",
