@@ -9,8 +9,6 @@ import 'vue-material/dist/vue-material.css'
 Vue.use(Vuex)
 Vue.use(VueMaterial)
 
-import pulseMutations from '@modules/pulse'
-
 const store = new Vuex.Store({
   state: {
     videoId: null,
@@ -21,7 +19,14 @@ const store = new Vuex.Store({
     handleInput (state, {input, value}) {
       state[input] = value
     },
-    ...pulseMutations
+    setNewConnection(state, stream) {
+      state.stream = stream
+    }
+  },
+  actions: {
+    SEARCH_RESULTS ({commit}, pkg) {
+      console.log(pkg)
+    }
   }
 })
 

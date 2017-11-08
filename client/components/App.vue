@@ -51,8 +51,8 @@ export default {
 
       let query = encodeGET({ q: searchString, vId: videoId });
       let searchRequest = await request(`search?${query}`);
-      if (searchRequest.text === "ok") {
-        this.$store.commit("openConnection");
+      if (searchRequest.body.clientId) {
+        openConnection({ clientId: searchRequest.body.clientId, store: this.$store})
       }
     }
   },

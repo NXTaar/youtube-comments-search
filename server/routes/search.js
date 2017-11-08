@@ -1,9 +1,16 @@
 let router = require('koa-router')()
+let uniqid = require('uniqid')
 
-let {connections} = require('../delivery')
+
+let { sendPackage } = require('../delivery')
+
+
 
 router.get('/search', async (ctx, next) => {
-    ctx.body = "ok"
+    let clientId = uniqid()
+    let {query} = ctx
+    ctx.body = { clientId }
+    setTimeout(() => sendPackage(clientId, query), 100)
 })
 
 
