@@ -59,10 +59,10 @@ const attachSocket = app => {
     return server
 }
 
-const sendPackage = (clientId, package) => {
+const sendSearchResults = (clientId, package) => {
     let connection = connections[clientId]
     connection.deliver('SEARCH_RESULTS', package)
 }
 
 
-module.exports = { attachSocket, sendPackage }
+module.exports = { attachSocket, sendSearchResults }

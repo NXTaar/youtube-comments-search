@@ -13,6 +13,15 @@ const APIRequest = ({api, mapper, static}) => query => {
     })
 }
 
+exports.getVideoId = url => {
+    let youtubeRegexp = /^.*(youtu\.be\/|vi?\/|u\/\w\/|embed\/|\?vi?=|\&vi?=)([^#\&\?]*).*/
+    const parsed = url.match(youtubeRegexp);
+    if (parsed && parsed[2]) {
+        return parsed[2]
+    }
+    return null
+}
+
 exports.comments = APIRequest({
     api: API.commentThreads.list,
     mapper: mapResponse('comments'),

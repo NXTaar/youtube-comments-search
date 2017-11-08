@@ -50,7 +50,16 @@ export default {
       if (typeof validation[true] === "string") return;
 
       let query = encodeGET({ q: searchString, vId: videoId });
-      let searchRequest = await request(`search?${query}`);
+
+      let searchRequest = { body: {} }
+      
+      try {
+        searchRequest = await request(`search?${query}`)
+      }
+      catch (err) {
+        console.error(err.response.text)
+      }
+      
       if (searchRequest.body.clientId) {
         openConnection({ clientId: searchRequest.body.clientId, store: this.$store})
       }
