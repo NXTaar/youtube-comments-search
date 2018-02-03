@@ -17,7 +17,12 @@ const drain = async (params) => {
         //todo надо что-то делать с пустыми реплаями (предположительно баг youtube)
     }
     if (response[itemsField].length > 0) {
-        callback(response[itemsField], api)
+        let package = {
+            items: response[itemsField],
+            api,
+            ...api === 'replies' && { parentId: params.comment.commentId }
+        }
+        callback(package)
     }
     
     if (pageToken) {

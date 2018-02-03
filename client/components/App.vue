@@ -1,43 +1,29 @@
 <template>
-  <div class="container">
-    <search></search>
-    <results v-if="comments.length > 0"></results>
-  </div>
+    <div class="layout">
+        <Search/>
+        <Results />
+    </div>
 </template>
 
-<script>
-export default {
-  name: "app",
-  computed: {
-    comments: {
-      get() {
-        return this.$store.state.comments;
-      }
-    }
-  }
-};
-</script>
+<style lang="scss">
+@import '~@constants/normalize.css';
+@import '~vue-material/dist/vue-material.css';
+@import '~@constants/common.scss';
 
-<!-- CSS libraries -->
-<!--<style src="normalize.css/normalize.css"></style> -->
-
-<!-- Global CSS -->
-<style>
+html,
 body {
-  height: 100%;
-  min-width: 720px;
-  overflow: scroll;
+    min-width: 720px;
+}
+
+body {
+    background-color: $color-alizarin-crimson;
 }
 </style>
 
-<!-- Scoped component css -->
-<!-- It only affect current component -->
-<style scoped>
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+<style scoped lang='scss'>
+.layout {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
 }
 </style>

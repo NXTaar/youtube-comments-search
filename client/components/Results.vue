@@ -1,41 +1,25 @@
 <template>
-  <md-card class="comments-list">
-      <md-list class="md-double-line">
-        <md-list-item v-for="comment in comments" :key="comment.commentId">
-            <div class="md-list-text-container content">
-                <span class="user">
-                    <a v-bind:href="comment.channel" target="_blanc">{{ comment.author }}</a>
-                </span>
-                <span class="comment">{{ comment.text }}</span>
-            </div>
-        </md-list-item>
-      </md-list>
-    </md-card>
+    <div class="results">
+        <Comment v-for="comment in comments" v-bind:key="comment.commentId" v-bind="comment" />
+    </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  computed: {
-    comments: {
-      get() {
-        return this.$store.state.comments;
-      }
+    computed: {
+        ...mapState(['comments'])
     }
-  }
-};
+}
 </script>
 
-<style scoped>
-.md-list-text-container > * {
-  color: rgb(17, 17, 17);
-  white-space: pre-line;
-  overflow: auto;
-}
-.comments-list {
-  min-width: 500px;
-  max-width: 50%;
-}
-.comment {
-    font-size: 12px;
+<style lang="scss" scoped>
+.results {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 560px;
+    justify-content: center;
+    grid-gap: 8px;
 }
 </style>
+

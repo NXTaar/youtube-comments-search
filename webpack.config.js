@@ -38,7 +38,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
@@ -52,6 +52,7 @@ module.exports = {
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
+            '@constants':  path.resolve(projectDir, 'client/constants'),
             '@utils': path.resolve(projectDir, 'client/utils'),
             '@modules': path.resolve(projectDir, 'client/modules')
         }

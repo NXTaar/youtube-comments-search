@@ -1,0 +1,9 @@
+$color-alizarin-crimson: #e52d27;
+
+@import "~vue-material/dist/theme/engine";
+
+@include md-register-theme("default", (
+  primary: #000
+));
+
+@import "~vue-material/dist/theme/all";

@@ -1,19 +1,42 @@
 <template>
-    <md-list-item>
-        <div class="md-list-text-container content">
-        <span class="user">(650) 555-1234</span>
-        <span class="comment">Mobile</span>
-        </div>
-    </md-list-item>
+<Card>
+  <md-card-header>
+
+    <md-avatar class="md-avatar-icon">
+      <template v-if="!avatar">
+        <md-ripple>{{namesFirstLetter}}</md-ripple>
+      </template>
+    </md-avatar>
+
+    <div class="md-title author">{{author}}</div>
+    <div class="md-subhead">{{date}}</div>
+
+  </md-card-header>
+
+  <md-card-content>{{text}}</md-card-content>
+</Card>
+  
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Comment",
+  props: ["author", "channel", "text", "publishedAt", "avatar"],
+  computed: {
+    date() {
+      return this.publishedAt;
+    },
+    namesFirstLetter() {
+      return this.author.charAt(0).toUpperCase();
+    }
+  }
+};
 </script>
 
-<style scoped>
-.content {
-    color: rgb(17, 17, 17);
+<style scoped lang="scss">
+@import "~@constants/common.scss";
+
+.author {
+  @include text-overflow;
 }
 </style>
-

@@ -1,30 +1,36 @@
 let router = require('koa-router')()
 let uniqid = require('uniqid')
 
-
 const { sendSearchResults } = require('../delivery')
 const { getVideoId } = require('../youtube/api')
 const drain = require('../drainer')
 
-
-const searchCallback = ({clientId, searchFrase}) => results => {
-    let found = results.filter(item => {
+const searchCallback = ({ clientId, searchFrase }) => ({
+    items,
+    api,
+    parentId
+}) => {
+    let found = items.filter(item => {
         let stringBeingSearched = item.text.toLowerCase()
-        let stringToSearch      = searchFrase.toLowerCase()
+        let stringToSearch = searchFrase.toLowerCase()
         return stringBeingSearched.indexOf(stringToSearch) > -1
     })
-    
+
     if (found.length === 0) return
 
-    sendSearchResults(clientId, found)
+    sendSearchResults(clientId, {
+        items: found,
+        type: api,
+        ...(api === 'replies' && { parentId })
+    })
 }
 
 router.get('/search', async (ctx, next) => {
     let clientId = uniqid()
-    let { vId, q: searchFrase } = ctx.query
+    let { link, phrase: searchFrase } = ctx.query
 
-    let videoId = getVideoId(vId)
-    
+    let videoId = getVideoId(link)
+
     if (videoId === null) {
         ctx.throw(404, 'Video not found')
     }
@@ -33,11 +39,10 @@ router.get('/search', async (ctx, next) => {
 
     drain({
         query,
-        callback: searchCallback({clientId, searchFrase})
+        callback: searchCallback({ clientId, searchFrase })
     })
-    
-    ctx.body = { clientId }
-})
 
+    ctx.body = { pulseId: clientId }
+})
 
 module.exports = router

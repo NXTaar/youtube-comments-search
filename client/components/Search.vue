@@ -1,77 +1,84 @@
 <template>
-  <md-card class="search-form">
-      <md-card-header>
-        <div class="md-title">Youtube Comment Search</div>
-        <div class="md-subhead">Enter video id and search string and get results</div>
-      </md-card-header>
+    <Card>
+        <md-steppers md-linear md-alternative :md-active-step.sync="active">
+            <md-step id="first" md-label="Search phrase" :md-done="!cannotContinue">
+                <div class="step">
+                    <div class="step-input">
+                        <md-field md-clearable>
+                            <label>Enter phrase (3 symbols minimum)</label>
+                            <md-input v-model.trim="phrase" />
+                        </md-field>
+                    </div>
 
-      <md-card-content>
-      
-        <div>
-           <md-input-container class="md-warn">
-             <label>What phrase are you looking?</label>
-             <md-input v-model="searchString"></md-input>
-           </md-input-container>
-        </div>
-      
-      </md-card-content>
+                    <div class="step-button">
+                        <md-button class="md-dense md-lala" @click="handleContinueClick" :disabled="cannotContinue">
+                            Continue
+                        </md-button>
+                    </div>
+                </div>
+            </md-step>
 
-      <md-card-actions class="actions">
+            <md-step id="second" md-label="Youtube video">
+                <div class="step">
+                    <div class="step-input">
+                        <md-field md-clearable>
+                            <label>Paste here link to Youtube video</label>
+                            <md-input v-model="link" />
+                        </md-field>
+                    </div>
 
-        <md-input-container class="video-id">
-             <label>Video ID</label>
-             <md-input v-model="videoId"></md-input>
-        </md-input-container>
-        
-        <md-button v-on:click="submit" class="search-btn md-raised md-primary">Search!</md-button>
-      
-      </md-card-actions>
-    </md-card>
+                    <div class="step-button">
+                        <md-button class="md-dense" @click="sendQuery({ phrase, link })">Search</md-button>
+                    </div>
+                </div>
+
+            </md-step>
+
+        </md-steppers>
+
+    </Card>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  name: "search",
-  methods: {
-    submit() {
-        this.$store.dispatch('SEND_SEARCH_REQUEST')
-    }
-  },
-  computed: {
-    searchString: {
-      get() {
-        return this.$store.state.searchString;
-      },
-      set(value) {
-        this.$store.commit("handleInput", { input: "searchString", value });
-      }
+    data: () => ({
+        active: 'first',
+        first: false,
+        link: 'https://www.youtube.com/watch?v=3A6qjsIvbKs',
+        phrase: 'хлывнюк'
+    }),
+    computed: {
+        cannotContinue() {
+            return this.phrase.length < 3
+        }
     },
-    videoId: {
-      get() {
-        return this.$store.state.videoId;
-      },
-      set(value) {
-        this.$store.commit("handleInput", { input: "videoId", value });
-      }
+    methods: {
+        handleContinueClick() {
+            this.active = 'second'
+        },
+        ...mapActions(['sendQuery'])
     }
-  }
-};
+}
 </script>
 
-<style scoped>
-.actions {
-  justify-content: space-between;
-  padding: 8px 16px;
-}
-.video-id {
-  width: 320px;
-}
-.search-form {
-  top: -50px;
-  min-width: 540px;
-  max-width: 50%;
-}
-.search-btn {
-  margin-right: 30px;
+<style lang="scss" scoped>
+@import '~@constants/common.scss';
+
+.step {
+    display: flex;
+    // flex-direction: column;
+    justify-content: center;
+
+    &-input {
+        width: 416px;
+    }
+
+    &-button {
+        width: 100px;
+        display: flex;
+        align-items: center;
+    }
 }
 </style>
